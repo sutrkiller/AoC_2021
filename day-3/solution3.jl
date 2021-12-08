@@ -4,7 +4,7 @@ N = vcat([map(x -> parse(Bool, x), n |> collect)' for n in split(input, "\n"; ke
 toInt(bitarray) = foldl((a,(i, x)) -> a + (x << (i-1)), enumerate(reverse(bitarray)); init=0)
 
 # Part 1
-gamma=count(==(1),N; dims=1) .>= size(numbers)[1]/2
+gamma = count(==(1), N; dims=1) .>= size(N)[1] / 2;
 epsilon = .!gamma
 println(toInt(gamma) * toInt(epsilon))
 
