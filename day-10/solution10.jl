@@ -8,7 +8,7 @@
 
     score_inv = 0;
     scores_inc = [];
-    @time for line in lines
+    for line in lines
         queue = []
         # Part 1
         for c in line
