@@ -1,7 +1,8 @@
 @time begin 
     input = open(f->read(f, String), "day-3/input3.txt")
-    N = vcat([map(x -> parse(Bool, x), n |> collect)' for n in split(input, "\n"; keepempty=false)]...)
-
+    ps(x::Array{Char}) = parse.(Int, x)'
+    N = vcat([ps(n) for n in split(input, "\n"; keepempty=false) .|> collect ]...)
+    
     toInt(bitarray) = foldl((a,(i, x)) -> a + (x << (i-1)), enumerate(reverse(bitarray)); init=0)
 
     # Part 1
@@ -10,7 +11,9 @@
     println(toInt(gamma) * toInt(epsilon))
 
     #Part 2
-    oxygen = foldl((A, i) -> (size(A)[1] == 1 ? A : A[A[:,i] .== (sum(A[:,i]) >= size(A)[1]/2), :]), 1:size(N)[2]; init= N)
-    co2 = foldl((A, i) -> (size(A)[1] == 1 ? A : A[A[:,i] .== (sum(A[:,i]) < size(A)[1]/2), :]), 1:size(N)[2]; init= N)
+    select_max(A::Matrix{Int}, i::Int) = size(A)[1] == 1 ? A : A[A[:,i] .== (sum(A[:,i]) >= size(A)[1]/2), :]
+    select_min(A::Matrix{Int}, i::Int) = size(A)[1] == 1 ? A : A[A[:,i] .== (sum(A[:,i]) < size(A)[1]/2), :]
+    oxygen = foldl(select_max, 1:size(N)[2]; init = N)
+    co2 = foldl(select_min, 1:size(N)[2]; init = N)
     println(toInt(oxygen) * toInt(co2))
 end
