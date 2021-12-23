@@ -18,25 +18,23 @@
     println(minimum(score) * total_throws)
 
     # Part 2
-    rolls = [(i,j,k) for i=1:3 for j=1:3 for k=1:3]
-    roll_counts = Dict([(i => count(x -> sum(x) == i, rolls)) for i=3:9])
-    function rec(pos, sc,  p)
-        wins = [0,0]
-        for r=3:9
-            npos = copy(pos)
-            npos[p] = mod1(pos[p] + r, 10)
-            nsc = copy(sc)
-            nsc[p] += npos[p]
-
-            if nsc[p] >= 21
-                wins[p] += roll_counts[r]
-            else
-                wins += roll_counts[r] * rec(npos, nsc, mod1(p+1,2))
-            end
+    roll_counts = Dict{Int,Int}([3=>1, 4=>3, 5=>6,6=>7,7=>6,8=>3,9=>1])
+    cache = fill([0,0], 10, 21, 10, 21)
+    scores = Set{NTuple{4, Int}}(sort(reshape([(p1, s1, p2, s2) for s1=21:-1:1, s2=21:-1:1,p1=1:10, p2=1:10],(:)); by = sum, rev=true))
+    function resolve(p1::Int, s1::Int, p2::Int, s2::Int)
+        (p1, s1,p2,s2) ∉ scores && return cache[p1,s1,p2,s2]
+        pop!(scores, (p1, s1, p2, s2))
+        new_el = [0,0]
+        for (r,c) in roll_counts
+            np = mod1(p1+r, 10)
+            ns = s1+np
+            new_el .+= ns >= 22 ? 
+                [c, 0] : 
+                c * resolve(p2,s2,np,ns)[2:-1:1] 
         end
-        wins
+        cache[p1,s1,p2,s2] = new_el
+        return new_el
     end
-
-    wins = rec(s_pos, [0,0], 1)
-    println(maximum(wins))
+    
+    println(resolve(s_pos[1],1,s_pos[2],1))
 end

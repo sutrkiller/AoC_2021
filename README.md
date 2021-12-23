@@ -35,4 +35,5 @@ Times include reading and parsing input + displaying output
  | [18](https://adventofcode.com/2021/day/18) | 912 ms | 470.6 MiB |
  | [19](https://adventofcode.com/2021/day/19) | 94 s | 62.9 GiB |
  | [20](https://adventofcode.com/2021/day/20) | 4.06 s | 949 MiB |
- | [21](https://adventofcode.com/2021/day/21) | 17.4 s | 19.8 GiB |
+ | [21](https://adventofcode.com/2021/day/21) | 183 ms | 59.9 MiB |
+ | [22](https://adventofcode.com/2021/day/22) | 292 ms | 195.6 MiB |
